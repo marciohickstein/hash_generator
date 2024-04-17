@@ -63,7 +63,7 @@ function App() {
       <textarea name="hash" id="hash" cols="45" rows="5" readOnly value={hash}></textarea>
       <br />
       <br />
-      <button className="btn" onClick={generateHash}>Generate</button>
+      <button className="btn btn-secondary" onClick={generateHash}>Generate</button>
 
     </div>
 
