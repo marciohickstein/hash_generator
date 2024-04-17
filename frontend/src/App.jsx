@@ -1,4 +1,5 @@
 import { useState } from 'react'
+//import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 
 function App() {
@@ -39,7 +40,7 @@ function App() {
     <div className='container text-center'>
       <br />
       <br />
-      <h2>Hash Generator XXX</h2>
+      <h2>Hash Generator</h2>
       <textarea name="string" id="string" cols="45" rows="10" value={string} onChange={changeString} ></textarea>
       <div className="row justify-content-center">
         <div className='col-3'>
@@ -62,7 +63,7 @@ function App() {
       <textarea name="hash" id="hash" cols="45" rows="5" readOnly value={hash}></textarea>
       <br />
       <br />
-      <button className="btn btn-primary" onClick={generateHash}>Generate</button>
+      <button className="btn" onClick={generateHash}>Generate</button>
 
     </div>
 
