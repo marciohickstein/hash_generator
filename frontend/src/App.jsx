@@ -32,33 +32,23 @@ function App() {
   }
 
   const changeAlgorithm = (event) => {
-    setAlgo(event.target.id);
+    setAlgo(event.target.value);
   }
 
   return (
     <div className='container text-center'>
       <br />
       <br />
-      <h2>Hash Generator</h2>
+      <h2>Hash Generator XXX</h2>
       <textarea name="string" id="string" cols="45" rows="10" value={string} onChange={changeString} ></textarea>
       <div className="row justify-content-center">
         <div className='col-3'>
-          <fieldset>
-            <div className="row justify-content-center">
-              <div className="col-1">
-                <input className="pl-5" type="radio" name="algo" id="md5" defaultChecked onClick={changeAlgorithm} />
-              </div>
-              <div className="col-2">
-                <label htmlFor="md5">Md5</label>
-              </div>
-              <div className="col-1">
-                <input type="radio" name="algo" id="sha1" onClick={changeAlgorithm} />
-              </div>
-              <div className="col-1">
-                <label htmlFor="sha1">Sha1</label>
-              </div>
-            </div>
-          </fieldset>
+          <select onChange={changeAlgorithm}>
+            <option value="md5">Md5</option>
+            <option value="sha1">Sha1</option>
+            <option value="sha256">Sha256</option>
+            <option value="sha512">Sha512</option>
+          </select>
         </div>
 
         <div className="col-3">
@@ -69,7 +59,7 @@ function App() {
       </div>
 
       <h4>HASH</h4>
-      <textarea name="hash" id="hash" cols="45" rows="3" readOnly value={hash}></textarea>
+      <textarea name="hash" id="hash" cols="45" rows="5" readOnly value={hash}></textarea>
       <br />
       <br />
       <button className="btn btn-primary" onClick={generateHash}>Generate</button>

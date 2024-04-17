@@ -8,9 +8,13 @@ services:
       - "8888:8888"
     depends_on:
       - backend
+    volumes:
+      - ./frontend:/app
 
   backend:
     build:
       context: ./backend
     ports:
       - "3003:3003"
+    volumes:
+      - ./backend:/app

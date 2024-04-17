@@ -1,8 +1,7 @@
 require('dotenv').config();
 const cors = require('cors');
 
-const Md5Generator = require('./crypto/Md5Generator');
-const ShaGenerator = require('./crypto/ShaGenerator');
+const HashGenerator = require('./crypto/HashGenerator');
 
 const express = require('express');
 
@@ -29,15 +28,27 @@ const generateHash = (HashGenerator) => {
 }
 
 app.post('/md5', (req, res) => {
-    const md5 = new Md5Generator(req.body.string);
+    const md5 = new HashGenerator(req.body.string, 'md5');
 
     return res.json(generateHash(md5));
 })
 
 app.post('/sha1', (req, res) => {
-    const sha = new ShaGenerator(req.body.string);
+    const hash = new HashGenerator(req.body.string, 'sha1');
 
-    return res.json(generateHash(sha));
+    return res.json(generateHash(hash));
+})
+
+app.post('/sha256', (req, res) => {
+    const hash = new HashGenerator(req.body.string, 'sha256');
+
+    return res.json(generateHash(hash));
+})
+
+app.post('/sha512', (req, res) => {
+    const hash = new HashGenerator(req.body.string, 'sha512');
+
+    return res.json(generateHash(hash));
 })
 
 module.exports = app;
