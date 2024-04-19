@@ -14,8 +14,8 @@ const generateHash = (HashGenerator) => {
         const hash = HashGenerator.generate();
 
         return {
-            type: HashGenerator.getType(),
             string: HashGenerator.getString(),
+            algorithm: HashGenerator.getAlgorithm(),
             hash,
         };
     } catch (error) {

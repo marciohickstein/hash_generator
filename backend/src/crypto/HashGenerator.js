@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 
 class HashGenerator {
-    constructor(string, type) {
-        this.type = type;
+    constructor(string, algorithm = 'md5') {
         this.string = string;
+        this.algorithm = algorithm;
     }
 
     generate() {
@@ -11,7 +11,7 @@ class HashGenerator {
             return ;
         }
 
-        return crypto.createHash(this.type).update(this.string).digest('hex');        
+        return crypto.createHash(this.algorithm).update(this.string).digest('hex');        
     }
 
     validate() {
@@ -22,8 +22,16 @@ class HashGenerator {
         return this.string;
     }
 
-    getType() {
-        return this.type;
+    setString(string) {
+        this.string = string;
+    }
+
+    getAlgorithm() {
+        return this.algorithm;
+    }
+
+    setAlgorithm(algorithm) {
+        this.algorithm = algorithm;
     }
 }
 
