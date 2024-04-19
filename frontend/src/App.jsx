@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 //import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
-import EnterButton from './components/EnterButton';
+import GenerateButton from './components/GenerateButton';
 
 function App() {
   const [string, setString] = useState('');
@@ -74,7 +74,7 @@ function App() {
       <textarea name="hash" id="hash" cols="45" rows="5" readOnly value={hash}></textarea>
       <br />
       <br />
-      <EnterButton title="Generate" parameter={algo} onClick={generateHash}></EnterButton>
+      <GenerateButton title="Generate" parameter={algo} onClick={generateHash}></GenerateButton>
 
     </div>
 
