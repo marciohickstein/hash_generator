@@ -51,4 +51,24 @@ app.post('/sha512', (req, res) => {
     return res.json(generateHash(hash));
 })
 
+app.post('/encode', (req, res) => {
+    const string = req.body.string;
+    const encoded = btoa(string);
+
+    return res.json({
+        string,
+        encode: encoded
+    });
+})
+
+app.post('/decode', (req, res) => {
+    const string = req.body.string;
+    const decoded = atob(string);
+
+    return res.json({
+        string,
+        decode: decoded
+    });
+})
+
 module.exports = app;
