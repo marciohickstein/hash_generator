@@ -2,6 +2,7 @@ require('dotenv').config();
 const cors = require('cors');
 
 const HashGenerator = require('./crypto/HashGenerator');
+const Base64 = require('./base64/Base64');
 
 const express = require('express');
 
@@ -53,21 +54,21 @@ app.post('/sha512', (req, res) => {
 
 app.post('/encode', (req, res) => {
     const string = req.body.string;
-    const encoded = btoa(string);
+    const base64 = new Base64(string);
 
     return res.json({
         string,
-        encode: encoded
+        encode: base64.encode()
     });
 })
 
 app.post('/decode', (req, res) => {
     const string = req.body.string;
-    const decoded = atob(string);
+    const base64 = new Base64(string);
 
     return res.json({
         string,
-        decode: decoded
+        decode: base64.decode()
     });
 })
 
