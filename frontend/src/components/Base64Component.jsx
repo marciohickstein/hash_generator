@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import GenerateButton from './GenerateButton';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 const OPER_ENCODE = 'encode';
