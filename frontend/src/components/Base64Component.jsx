@@ -54,7 +54,8 @@ function Base64Component() {
         <div className='container text-center'>
             <br />
             <br />
-            <h2>{ camelCase(operation === OPER_ENCODE ? OPER_ENCODE : OPER_DECODE) }</h2>
+            <h2>Base64</h2>
+            <h4>{ camelCase(operation === OPER_ENCODE ? OPER_ENCODE : OPER_DECODE) }</h4>
             <textarea className="mb-2" name="string" id="string" cols="45" rows="10" value={string} onChange={changeString} ></textarea>
             <div className="row justify-content-center mb-2">
                 <div className='col-3'>
