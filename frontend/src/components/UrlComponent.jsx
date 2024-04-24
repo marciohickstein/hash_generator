@@ -5,14 +5,10 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 const OPER_ENCODE = 'encode';
 const OPER_DECODE = 'decode';
 
-function Base64Component() {
+function UrlComponent() {
     const [string, setString] = useState('');
     const [operation, setOperation] = useState(OPER_ENCODE);
     const [stringProcessed, setStringProcessed] = useState('');
-
-    const uppercase = (string) => {
-        return string.toUpperCase();
-    }
 
     const camelCase = (string) => {
         const array = string.split(' ');
@@ -31,8 +27,10 @@ function Base64Component() {
     }
 
     const encodeDecode = (event) => {
+        const url = `http://localhost:3003/${operation}_url`;
+        console.log(url);
         (async () => {
-            const response = await fetch(`http://localhost:3003/${operation}`, {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -41,8 +39,9 @@ function Base64Component() {
             });
 
             const responseApi = await response.json();
-
-            setStringProcessed(responseApi[operation]);
+console.log(responseApi)
+            const result = operation === 'encode' ? responseApi.encodedUrl : responseApi.string;
+            setStringProcessed(result);
         })()
     }
 
@@ -54,7 +53,7 @@ function Base64Component() {
         <div className='container text-center'>
             <br />
             <br />
-            <h2>Base64</h2>
+            <h2>URL Encode / Decode</h2>
             <h4>{ camelCase(operation === OPER_ENCODE ? OPER_ENCODE : OPER_DECODE) }</h4>
             <textarea className="mb-2" name="string" id="string" cols="45" rows="10" value={string} onChange={changeString} ></textarea>
             <div className="row justify-content-center mb-2">
@@ -76,4 +75,4 @@ function Base64Component() {
     )
 }
 
-export default Base64Component;
+export default UrlComponent;

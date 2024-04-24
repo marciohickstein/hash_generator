@@ -1,3 +1,5 @@
+const HashGenerator = require('../crypto/HashGenerator');
+
 const generateHash = (HashGenerator) => {
     try {
         const hash = HashGenerator.generate();

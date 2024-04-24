@@ -1,8 +1,9 @@
 require('dotenv').config();
 const cors = require('cors');
-
+const cryptoRouter = require('./routes/cryptoRouter');
 const HashGenerator = require('./crypto/HashGenerator');
 const Base64 = require('./base64/Base64');
+const Url = require('./url/Url');
 
 const express = require('express');
 
@@ -28,29 +29,10 @@ const generateHash = (HashGenerator) => {
     }
 }
 
-app.post('/md5', (req, res) => {
-    const md5 = new HashGenerator(req.body.string, 'md5');
-
-    return res.json(generateHash(md5));
-})
-
-app.post('/sha1', (req, res) => {
-    const hash = new HashGenerator(req.body.string, 'sha1');
-
-    return res.json(generateHash(hash));
-})
-
-app.post('/sha256', (req, res) => {
-    const hash = new HashGenerator(req.body.string, 'sha256');
-
-    return res.json(generateHash(hash));
-})
-
-app.post('/sha512', (req, res) => {
-    const hash = new HashGenerator(req.body.string, 'sha512');
-
-    return res.json(generateHash(hash));
-})
+app.post('/md5', cryptoRouter);
+app.post('/sha1', cryptoRouter);
+app.post('/sha256', cryptoRouter)
+app.post('/sha512', cryptoRouter);
 
 app.post('/encode', (req, res) => {
     const string = req.body.string;
@@ -71,5 +53,27 @@ app.post('/decode', (req, res) => {
         decode: base64.decode()
     });
 })
+
+
+app.post('/encode_url', (req, res) => {
+    const string = req.body.string;
+    const encodedUrl = new Url().encodeUrl(string);
+
+    return res.json({
+        string,
+        encodedUrl
+    })
+})
+
+app.post('/decode_url', (req, res) => {
+    const encodedUrl = req.body.encodedUrl;
+    const url = new Url().decodeUrl(encodedUrl);
+
+    return res.json({
+        encodedUrl,
+        url
+    })
+})
+
 
 module.exports = app;
