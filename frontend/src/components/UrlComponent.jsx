@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import GenerateButton from './GenerateButton';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
+import { camelCase } from '../utils/Utils';
 
 const OPER_ENCODE = 'encode';
 const OPER_DECODE = 'decode';
@@ -10,25 +11,15 @@ function UrlComponent() {
     const [operation, setOperation] = useState(OPER_ENCODE);
     const [stringProcessed, setStringProcessed] = useState('');
 
-    const camelCase = (string) => {
-        const array = string.split(' ');
-        const arrayInCamelCase = array.map((w) => {
-            const wordInCamelCase = w[0].toUpperCase() + w.slice(1).toLowerCase();
-
-            return wordInCamelCase;
-        })
-
-
-        return arrayInCamelCase.join(' ');
-    }
-
     const changeString = (event) => {
-        setString(event.target.value);
+        const newString = event.target.value;
+        
+        setString(newString);
     }
 
     const encodeDecode = (event) => {
         const url = `http://localhost:3003/${operation}_url`;
-        console.log(url);
+        console.log(string);
         (async () => {
             const response = await fetch(url, {
                 method: 'POST',
@@ -39,9 +30,10 @@ function UrlComponent() {
             });
 
             const responseApi = await response.json();
-console.log(responseApi)
-            const result = operation === 'encode' ? responseApi.encodedUrl : responseApi.string;
+            const result = operation === 'encode' ? responseApi.encodedUrl : responseApi.url;
             setStringProcessed(result);
+            console.log(`Operation: ${operation}`, `URL: ${url}`, `Request: ${string}`, `Response: ${result}`);
+
         })()
     }
 
@@ -69,9 +61,7 @@ console.log(responseApi)
             <br />
             <br />
             <GenerateButton title="Process" onClick={encodeDecode}></GenerateButton>
-
         </div>
-
     )
 }
 

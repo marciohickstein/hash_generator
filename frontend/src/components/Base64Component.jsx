@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import GenerateButton from './GenerateButton';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
+import { camelCase } from '../utils/Utils';
 
 const OPER_ENCODE = 'encode';
 const OPER_DECODE = 'decode';
@@ -9,22 +10,6 @@ function Base64Component() {
     const [string, setString] = useState('');
     const [operation, setOperation] = useState(OPER_ENCODE);
     const [stringProcessed, setStringProcessed] = useState('');
-
-    const uppercase = (string) => {
-        return string.toUpperCase();
-    }
-
-    const camelCase = (string) => {
-        const array = string.split(' ');
-        const arrayInCamelCase = array.map((w) => {
-            const wordInCamelCase = w[0].toUpperCase() + w.slice(1).toLowerCase();
-
-            return wordInCamelCase;
-        })
-
-
-        return arrayInCamelCase.join(' ');
-    }
 
     const changeString = (event) => {
         setString(event.target.value);

@@ -1,7 +1,6 @@
 require('dotenv').config();
 const cors = require('cors');
 const cryptoRouter = require('./routes/cryptoRouter');
-const HashGenerator = require('./crypto/HashGenerator');
 const Base64 = require('./base64/Base64');
 const Url = require('./url/Url');
 
@@ -10,24 +9,6 @@ const express = require('express');
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-const generateHash = (HashGenerator) => {
-    try {
-        const hash = HashGenerator.generate();
-
-        return {
-            string: HashGenerator.getString(),
-            algorithm: HashGenerator.getAlgorithm(),
-            hash,
-        };
-    } catch (error) {
-        
-        return {
-            error: true,
-            message: error.message
-        };
-    }
-}
 
 app.post('/md5', cryptoRouter);
 app.post('/sha1', cryptoRouter);
@@ -60,20 +41,21 @@ app.post('/encode_url', (req, res) => {
     const encodedUrl = new Url().encodeUrl(string);
 
     return res.json({
-        string,
+        url: string,
         encodedUrl
     })
 })
 
 app.post('/decode_url', (req, res) => {
-    const encodedUrl = req.body.encodedUrl;
+    const encodedUrl = req.body.string;
     const url = new Url().decodeUrl(encodedUrl);
 
-    return res.json({
+    const response = {
         encodedUrl,
         url
-    })
-})
+    }
 
+    return res.json(response);
+})
 
 module.exports = app;
