@@ -12,7 +12,7 @@ const urlController = {
     }),
     
     decodeUrl: ('/decode_url', (req, res) => {
-        const encodedUrl = req.body.encodedUrl;
+        const encodedUrl = req.body.string;
         const url = new Url().decodeUrl(encodedUrl);
     
         return res.json({
