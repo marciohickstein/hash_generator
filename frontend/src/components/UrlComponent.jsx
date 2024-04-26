@@ -46,7 +46,7 @@ function UrlComponent() {
             <br />
             <br />
             <h2>URL Encode / Decode</h2>
-            <h4>{ camelCase(operation === OPER_ENCODE ? OPER_ENCODE : OPER_DECODE) }</h4>
+            <h4>URL to { camelCase(operation) }</h4>
             <textarea className="mb-2" name="string" id="string" cols="45" rows="10" value={string} onChange={changeString} ></textarea>
             <div className="row justify-content-center mb-2">
                 <div className='col-3'>
@@ -56,11 +56,11 @@ function UrlComponent() {
                     </select>
                 </div>
             </div>
-            <h4>{ camelCase(operation === OPER_DECODE ? OPER_ENCODE : OPER_DECODE) }</h4>
+            <h4>{ camelCase(operation) }d URL</h4>
             <textarea name="hash" id="hash" cols="45" rows="5" readOnly value={stringProcessed}></textarea>
             <br />
             <br />
-            <GenerateButton title="Process" onClick={encodeDecode}></GenerateButton>
+            <GenerateButton title={operation} onClick={encodeDecode}></GenerateButton>
         </div>
     )
 }
