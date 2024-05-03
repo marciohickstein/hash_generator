@@ -3,11 +3,15 @@ const cors = require('cors');
 const cryptoRouter = require('./routes/cryptoRouter');
 const base64Router = require('./routes/base64Router');
 const urlRouter = require('./routes/urlRouter');
+const bodyParser = require('body-parser');
 
 const express = require('express');
 
 const app = express();
+
 app.use(cors());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json());
 
 app.post('/md5', cryptoRouter);

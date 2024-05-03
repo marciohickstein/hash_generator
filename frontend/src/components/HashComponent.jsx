@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import GenerateButton from './GenerateButton';
-
+import LoadFile from './LoadFile';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 function HashComponent() {
@@ -8,13 +8,22 @@ function HashComponent() {
     const [hash, setHash] = useState('');
     const [algo, setAlgo] = useState('md5');
     const [uppercase, setUppercase] = useState(false);
+    const [file, setFile] = useState('');
 
     const changeString = (event) => {
         setString(event.target.value);
     }
 
+    const handleLoadFromFile = (fileName, contentOfFile) => {
+        if (fileName && contentOfFile) {
+            setString(contentOfFile);
+            setFile(fileName);
+        }
+    }
+
     const generateHash = () => {
         if (!string) {
+            setHash('');
             return;
         }
         (async () => {
@@ -45,7 +54,7 @@ function HashComponent() {
 
     useEffect(() => {
         generateHash();
-    }, [uppercase]);
+    }, [uppercase, file, algo]);
 
     return (
         <div className='container text-center'>
@@ -53,20 +62,28 @@ function HashComponent() {
             <br />
             <h2>Hash Generator</h2>
             <textarea name="string" id="string" cols="45" rows="10" value={string} onChange={changeString}></textarea>
+
             <div className="row justify-content-center">
-                <div className='col-3'>
-                    <select onChange={changeAlgorithm} onClick={generateHash} onKeyUp={generateHash}>
-                        <option value="md5">Md5</option>
-                        <option value="sha1">Sha1</option>
-                        <option value="sha256">Sha256</option>
-                        <option value="sha512">Sha512</option>
-                    </select>
-                </div>
+                <div className='col-4 mt-1'>
+                    <div className="row justify-content-between">
+                        <div className='col-4 mt-1'>
+                            <select onChange={changeAlgorithm}>
+                                <option value="md5">Md5</option>
+                                <option value="sha1">Sha1</option>
+                                <option value="sha256">Sha256</option>
+                                <option value="sha512">Sha512</option>
+                            </select>
+                        </div>
 
-                <div className="col-3">
-                    <input type="checkbox" name="uppercase" id="uppercase" onClick={changeUpperCaseString} onKeyUp={generateHash} />
-                    UpperCase
+                        <div className="col-4 mt-1">
+                            <input type="checkbox" name="uppercase" id="uppercase" onClick={changeUpperCaseString}/>
+                            UpperCase
+                        </div>
 
+                        <div className="col-4">
+                            <LoadFile name="loadFromFileHash" uppercase={uppercase} onLoad={handleLoadFromFile}></LoadFile>
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import GenerateButton from './GenerateButton';
-import '../../node_modules/bootstrap/dist/css/bootstrap.css';
+// import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { camelCase } from '../utils/Utils';
 
 const OPER_ENCODE = 'encode';
