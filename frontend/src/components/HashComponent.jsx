@@ -37,6 +37,12 @@ function HashComponent() {
 
             const hashFromApi = await response.json();
 
+            if (hashFromApi.error) {
+                alert(hashFromApi.message);
+                setHash('');
+                return;
+            }
+
             setHash(hashFromApi.hash);
         })()
     }

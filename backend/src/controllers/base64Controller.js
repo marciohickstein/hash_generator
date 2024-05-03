@@ -6,42 +6,23 @@ const base64Controller =
         const string = req.body.string;
         const base64 = new Base64(string);
         const result = base64.encode();
-        let response;
 
-        if (base64.hasError) {
-            response = {
-                error: true,
-                message: base64.getErrorMessage()
-            }
-        } else {
-            response = {
-                string,
-                encode: result
-            }
-        }
-
-        return res.json(response);
+        return res.json({
+            string,
+            encode: result
+        });
     },
 
     decode: (req, res) => {
         const string = req.body.string;
         const base64 = new Base64(string);
         const result = base64.decode();
-        let response;
 
-        if (base64.hasError) {
-            response = {
-                error: true,
-                message: base64.getErrorMessage()
-            }
-        } else {
-            response = {
-                string,
-                encode: result
-            }
+        return res.json({
+            string,
+            encode: result
         }
-
-        return res.json(response);
+);
     }
 }
 

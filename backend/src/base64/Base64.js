@@ -12,43 +12,13 @@ class Base64 {
     getString() {
         return this.string;
     }
-    
+
     encode() {
-        let result = null;
-
-        try {
-            result = btoa(this.string);
-            this.error = '';
-            this.hasError = false;
-        } catch (error) {
-            this.error = error;
-            this.hasError = true;
-        }
-
-        return result;
+        return btoa(this.string);
     }
 
     decode() {
-        let result = null;
-
-        try {
-            result = atob(this.string);
-            this.error = '';
-            this.hasError = false;
-        } catch (error) {
-            this.error = error;
-            this.hasError = true;
-        }
-
-        return result;
-    }
-
-    getErrorMessage() {
-        return this.error.message;
-    }
-
-    hasError() {
-        return this.hasError();
+        return atob(this.string);
     }
 }
 
