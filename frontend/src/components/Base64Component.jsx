@@ -35,7 +35,10 @@ function Base64Component() {
             });
 
             const responseApi = await response.json();
-
+            if (responseApi.error) {
+                alert(responseApi.message);
+                return;
+            }
             setStringProcessed(responseApi[operation]);
         })()
     }
