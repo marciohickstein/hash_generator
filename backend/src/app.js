@@ -25,10 +25,13 @@ app.post('/encode_url', urlRouter);
 app.post('/decode_url', urlRouter);
 
 app.use((error, req, res, next) => {
-    console.log('error middleware');
     res.status(500).json({
         error: true,
-        message: error.message
+        message: error.message,
+        method: req.method,
+        path: req.url,
+        body: req.body,
+        params: req.params,
     })
 })
 

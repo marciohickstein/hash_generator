@@ -36,6 +36,7 @@ function Base64Component() {
 
             const responseApi = await response.json();
             if (responseApi.error) {
+                console.error(responseApi);
                 alert(responseApi.message);
                 setStringProcessed('');
                 return;
