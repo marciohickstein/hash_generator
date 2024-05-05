@@ -1,5 +1,7 @@
 require('dotenv').config();
 const cors = require('cors');
+const morgan = require('morgan');
+
 const cryptoRouter = require('./routes/cryptoRouter');
 const base64Router = require('./routes/base64Router');
 const urlRouter = require('./routes/urlRouter');
@@ -12,6 +14,7 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.json());
+app.use(morgan('dev'));
 
 app.post('/md5', cryptoRouter);
 app.post('/sha1', cryptoRouter);

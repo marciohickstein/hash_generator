@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import GenerateButton from './GenerateButton';
-// import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-import { camelCase } from '../utils/Utils';
+import { camelCase, httpRequest } from '../utils/Utils';
 import LoadFile from './LoadFile';
 
 const OPER_ENCODE = 'encode';
@@ -24,25 +23,14 @@ function Base64Component() {
         setString(event.target.value);
     }
 
-    const encodeDecode = (event) => {
-        (async () => {
-            const response = await fetch(`http://localhost:3003/${operation}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ string })
-            });
-
-            const responseApi = await response.json();
-            if (responseApi.error) {
-                console.error(responseApi);
-                alert(responseApi.message);
-                setStringProcessed('');
-                return;
-            }
-            setStringProcessed(responseApi[operation]);
-        })()
+    const encodeDecode = async (event) => {
+        const response = await httpRequest(`localhost`, 3003, operation, string);
+        if (response.error) {
+            alert(response.message);
+            setStringProcessed('');
+            return;
+        }
+        setStringProcessed(response[operation]);
     }
 
     const changeOperation = (event) => {
@@ -65,8 +53,8 @@ function Base64Component() {
                     <div className="row justify-content-between mb-2">
                         <div className='col-6 mt-1'>
                             <select onChange={changeOperation}>
-                                <option value="encode">Encode</option>
-                                <option value="decode">Decode</option>
+                                <option value={OPER_ENCODE}>{camelCase(OPER_ENCODE)}</option>
+                                <option value={OPER_DECODE}>{camelCase(OPER_DECODE)}</option>
                             </select>
                         </div>
 
