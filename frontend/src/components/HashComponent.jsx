@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import GenerateButton from './GenerateButton';
 import LoadFile from './LoadFile';
-import '../../node_modules/bootstrap/dist/css/bootstrap.css';
+import { httpRequest } from '../utils/Utils';
 
 function HashComponent() {
     const [string, setString] = useState('');
+    const [originalString, setOriginalString] = useState('');
     const [hash, setHash] = useState('');
     const [algo, setAlgo] = useState('md5');
     const [uppercase, setUppercase] = useState(false);
@@ -21,35 +22,27 @@ function HashComponent() {
         }
     }
 
-    const generateHash = () => {
+    const generateHash = async () => {
         if (!string) {
             setHash('');
             return;
         }
-        (async () => {
-            const response = await fetch(`http://localhost:3003/${algo}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ string })
-            });
 
-            const hashFromApi = await response.json();
+        const response = await httpRequest('localhost', 3003, algo, string);
 
-            if (hashFromApi.error) {
-                alert(hashFromApi.message);
-                setHash('');
-                return;
-            }
+        if (response.error) {
+            alert(response.message);
+            setHash('');
+            return;
+        }
 
-            setHash(hashFromApi.hash);
-        })()
+        setHash(response.hash);
     }
 
     const changeUpperCaseString = (event) => {
-        let upperString = (event.target.checked) ? string.toUpperCase() : string.toLowerCase();
+        let upperString = (event.target.checked) ? string.toUpperCase() : originalString;
 
+        setOriginalString(string);
         setString(upperString);
         setUppercase(event.target.checked);
     }
@@ -82,7 +75,7 @@ function HashComponent() {
                         </div>
 
                         <div className="col-4 mt-1">
-                            <input type="checkbox" name="uppercase" id="uppercase" onClick={changeUpperCaseString}/>
+                            <input type="checkbox" name="uppercase" id="uppercase" onClick={changeUpperCaseString} />
                             UpperCase
                         </div>
 

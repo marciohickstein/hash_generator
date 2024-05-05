@@ -20,7 +20,7 @@ const base64Controller =
 
         return res.json({
             string,
-            encode: result
+            decode: result
         }
 );
     }
