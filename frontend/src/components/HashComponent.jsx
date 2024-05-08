@@ -27,8 +27,7 @@ function HashComponent() {
             setHash('');
             return;
         }
-
-        const response = await httpRequest('localhost', 3003, algo, string);
+        const response = await httpRequest(window.location.hostname, 3003, algo, string);
 
         if (response.error) {
             alert(response.message);

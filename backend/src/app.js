@@ -27,6 +27,12 @@ app.post('/decode', base64Router);
 app.post('/encode_url', urlRouter);
 app.post('/decode_url', urlRouter);
 
+app.get('/ping', (req, res) => {
+    return res.json({
+        timestamp: Date.now()
+    });
+})
+
 app.use((error, req, res, next) => {
     res.status(500).json({
         error: true,

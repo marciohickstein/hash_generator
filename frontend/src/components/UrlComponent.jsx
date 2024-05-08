@@ -17,7 +17,7 @@ function UrlComponent() {
     }
 
     const encodeDecode = async (event) => {
-        const response = await httpRequest('localhost', 3003, operation + '_url', string);
+        const response = await httpRequest(window.location.hostname, 3003, operation + '_url', string);
 
         const result = operation === OPER_ENCODE ? response.encodedUrl : response.url;
         setStringProcessed(result);
