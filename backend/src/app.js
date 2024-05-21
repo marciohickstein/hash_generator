@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const cryptoRouter = require('./routes/cryptoRouter');
 const base64Router = require('./routes/base64Router');
 const urlRouter = require('./routes/urlRouter');
-
+const networkRouter = require('./routes/networkRouter.js');
 const express = require('express');
 
 const app = express();
@@ -26,6 +26,8 @@ app.post('/decode', base64Router);
 
 app.post('/encode_url', urlRouter);
 app.post('/decode_url', urlRouter);
+
+app.use(networkRouter);
 
 app.get('/ping', (req, res) => {
     return res.json({
