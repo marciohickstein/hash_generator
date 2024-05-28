@@ -1,5 +1,5 @@
 const { Socket } = require('net');
-const { connect } = require('../utils/network');
+const { connect, getLan, getExternalIp } = require('../utils/network');
 
 const networkController = {
     testConnection: async (req, res) => {
@@ -13,7 +13,19 @@ const networkController = {
         } catch (error) {
             return res.json(error);
         }
+    },
+    getLan: (req, res) => {
+        const response = getLan();
+        
+        return res.json(response);
+    },
+
+    getExternalIp: async (req, res) => {
+        const response = await getExternalIp();
+        
+        return res.json(response);
     }
+    
 }
 
 module.exports = networkController;

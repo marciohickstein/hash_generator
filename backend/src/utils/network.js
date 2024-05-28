@@ -1,4 +1,5 @@
 const { Socket } = require('net');
+const os = require('os');
 
 const TIMEOUT = 5000;
 const DEBUG = false;
@@ -8,6 +9,21 @@ const mountReturn = (success, message) => {
         success,
         message
     };
+}
+
+const getLan = () => {
+    const networkInterfaces = os.networkInterfaces();
+
+    return networkInterfaces;
+}
+
+const getExternalIp = async () => {
+    const response = await fetch('http://ipinfo.io/ip');
+    const ip = await response.text();
+
+    return ({
+        ip: ip
+    })
 }
 
 const connect = (host, port) => {
@@ -60,5 +76,8 @@ const connect = (host, port) => {
 }
 
 module.exports = {
-    connect
+    connect,
+    getLan,
+    getExternalIp,
 }
+

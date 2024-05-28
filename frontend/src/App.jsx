@@ -4,6 +4,7 @@ import HashComponent from './components/HashComponent';
 import Base64Component from './components/Base64Component';
 import UrlComponent from './components/UrlComponent';
 import PortChecker from './components/PortChecker';
+import WhatsMyIp from './components/WhatsMyIp';
 
 function App() {
 
@@ -22,6 +23,9 @@ function App() {
         <li className="nav-item" role="presentation">
           <button className="nav-link" id="port-checker-tab" data-bs-toggle="tab" data-bs-target="#port-checker-pane" type="button" role="tab" aria-controls="url-tab-pane" aria-selected="false">Port Checker</button>
         </li>
+        <li className="nav-item" role="presentation">
+          <button className="nav-link" id="whatsmyip-tab" data-bs-toggle="tab" data-bs-target="#whatsmyip-checker-pane" type="button" role="tab" aria-controls="url-tab-pane" aria-selected="false">Whats My IP</button>
+        </li>
       </ul>
       <div className="tab-content" id="myTabContent">
         <div className="tab-pane fade show active" id="hash-pane" role="tabpanel" aria-labelledby="hash" tabIndex="0">
@@ -35,6 +39,9 @@ function App() {
         </div>
         <div className="tab-pane fade" id="port-checker-pane" role="tabpanel" aria-labelledby="url-tab" tabIndex="0">
           <PortChecker />
+        </div>
+        <div className="tab-pane fade" id="whatsmyip-checker-pane" role="tabpanel" aria-labelledby="url-tab" tabIndex="0">
+          <WhatsMyIp />
         </div>
       </div>
 

@@ -29,3 +29,17 @@ export const httpRequest = async (host, port, path, string) => {
         }
     }
 }
+
+export const httpGetRequest = async (host, port, path) => {
+    try {
+        const responseFetch = await fetch(`http://${host}:${port}/${path}`);
+        const responseJson = await responseFetch.json();
+        return responseJson;
+
+    } catch (error) {
+        return {
+            error: true,
+            message: error.message
+        }
+    }
+}
