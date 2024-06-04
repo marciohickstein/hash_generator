@@ -3,7 +3,6 @@ import { httpRequest } from '../utils/Utils';
 
 const PortChecker = ({ }) => {
 
-    const [ externalIp, setExternalIp ] = useState('');
     const [ statusPort, setStatusPort ] = useState('');
     const [ port, setPort ] = useState(0);
     const [ address, setAddress ] = useState('');
@@ -14,10 +13,8 @@ const PortChecker = ({ }) => {
                 const response = await fetch('http://ipinfo.io/ip');
                 const ip = await response.text();
 
-                setExternalIp(ip);
                 setAddress(ip);
             } catch (error) {
-                setExternalIp('');
                 setAddress('');
             }
         })()
@@ -53,7 +50,7 @@ const PortChecker = ({ }) => {
                 <br />
                 <div className="mb-3">
                     <label htmlFor="" className="form-label">Your IP Address: </label>
-                    <input type="text" className="form-control" name="address" id="address" onCopy={changeAddress} onChange={changeAddress} defaultValue={externalIp} />
+                    <input type="text" className="form-control" name="address" id="address" onCopy={changeAddress} onChange={changeAddress} defaultValue={''} />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="" className="form-label">Port Number: </label>

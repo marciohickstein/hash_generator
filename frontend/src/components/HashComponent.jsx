@@ -59,34 +59,31 @@ function HashComponent() {
             <br />
             <br />
             <h2>Hash Generator</h2>
-            <textarea name="string" id="string" cols="45" rows="10" value={string} onChange={changeString}></textarea>
+            <textarea name="string" id="string" className="form-control" rows="10" value={string} onChange={changeString}></textarea>
+            <br />
+            <div className="row justify-content-around">
+                <div className="row justify-content-around">
+                    <div className='col-4 mt-1'>
+                        <select onChange={changeAlgorithm}>
+                            <option value="md5">Md5</option>
+                            <option value="sha1">Sha1</option>
+                            <option value="sha256">Sha256</option>
+                            <option value="sha512">Sha512</option>
+                        </select>
+                    </div>
 
-            <div className="row justify-content-center">
-                <div className='col-4 mt-1'>
-                    <div className="row justify-content-between">
-                        <div className='col-4 mt-1'>
-                            <select onChange={changeAlgorithm}>
-                                <option value="md5">Md5</option>
-                                <option value="sha1">Sha1</option>
-                                <option value="sha256">Sha256</option>
-                                <option value="sha512">Sha512</option>
-                            </select>
-                        </div>
+                    <div className="col-4 mt-1">
+                        <input type="checkbox" name="uppercase" id="uppercase" onClick={changeUpperCaseString} />
+                        UpperCase
+                    </div>
 
-                        <div className="col-4 mt-1">
-                            <input type="checkbox" name="uppercase" id="uppercase" onClick={changeUpperCaseString} />
-                            UpperCase
-                        </div>
-
-                        <div className="col-4">
-                            <LoadFile name="loadFromFileHash" uppercase={uppercase} onLoad={handleLoadFromFile}></LoadFile>
-                        </div>
+                    <div className="col-4">
+                        <LoadFile name="loadFromFileHash" uppercase={uppercase} onLoad={handleLoadFromFile}></LoadFile>
                     </div>
                 </div>
             </div>
-
             <h4>HASH</h4>
-            <textarea name="hash" id="hash" cols="45" rows="5" readOnly value={hash}></textarea>
+            <textarea name="hash" id="hash" className="form-control" rows="5" readOnly value={hash}></textarea>
             <br />
             <br />
             <GenerateButton title="Generate" parameter={algo} onClick={generateHash}></GenerateButton>
