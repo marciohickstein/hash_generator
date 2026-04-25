@@ -5,7 +5,6 @@ function LoadFile({ name, onLoad, uppercase, title }) {
         let contentOfFile = '';
 
         if (event.target.files.length <= 0) {
-            console.log(onLoad);
             onLoad(fileName, contentOfFile);
             return;
         }
@@ -24,8 +23,18 @@ function LoadFile({ name, onLoad, uppercase, title }) {
 
     return (
         <>
-            <label className="btn btn-secondary" htmlFor={name ? name : "loadFromFile"}>{title ? title : 'Load File'}</label>
-            <input type="file" name={name ? name : "loadFromFile"} id={name ? name : "loadFromFile"} onChange={onLoadFromFile} style={{ display: 'none' }} accept='text/plain' />
+            <label className="btn btn-outline-secondary" htmlFor={name || 'loadFromFile'}>
+                <i className="bi bi-file-earmark-text me-2"></i>
+                {title || 'Load File'}
+            </label>
+            <input
+                type="file"
+                name={name || 'loadFromFile'}
+                id={name || 'loadFromFile'}
+                onChange={onLoadFromFile}
+                style={{ display: 'none' }}
+                accept="text/plain"
+            />
         </>
     )
 }

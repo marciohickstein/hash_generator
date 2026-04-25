@@ -19,11 +19,9 @@ function Base64Component() {
         }
     }
 
-    const changeString = (event) => {
-        setString(event.target.value);
-    }
+    const changeString = (event) => setString(event.target.value);
 
-    const encodeDecode = async (event) => {
+    const encodeDecode = async () => {
         const response = await httpRequest(window.location.hostname, 3003, operation, string);
         if (response.error) {
             alert(response.message);
@@ -33,8 +31,10 @@ function Base64Component() {
         setStringProcessed(response[operation]);
     }
 
-    const changeOperation = (event) => {
-        setOperation(event.target.value);
+    const changeOperation = (event) => setOperation(event.target.value);
+
+    const copyToClipboard = () => {
+        if (stringProcessed) navigator.clipboard.writeText(stringProcessed);
     }
 
     useEffect(() => {
@@ -42,34 +42,59 @@ function Base64Component() {
     }, [file])
 
     return (
-        <div className='container text-center'>
-            <br />
-            <br />
-            <h2>Base64</h2>
-            <h4>String to {camelCase(operation)}</h4>
-            <textarea className="form-control mb-2" name="string" id="string" cols="45" rows="10" value={string} onChange={changeString} ></textarea>
-            <div className="row justify-content-center">
-                <div className="row justify-content-between mb-2">
-                    <div className='col-6 mt-1'>
-                        <select onChange={changeOperation}>
+        <div className="card tool-card">
+            <div className="card-header d-flex align-items-center gap-2">
+                <i className="bi bi-code-slash fs-5 text-primary"></i>
+                <h5 className="mb-0 fw-semibold">Base64</h5>
+            </div>
+            <div className="card-body p-4">
+                <div className="row g-3 mb-3 align-items-end">
+                    <div className="col-sm-6">
+                        <label className="section-label">Operation</label>
+                        <select className="form-select" onChange={changeOperation}>
                             <option value={OPER_ENCODE}>{camelCase(OPER_ENCODE)}</option>
                             <option value={OPER_DECODE}>{camelCase(OPER_DECODE)}</option>
                         </select>
                     </div>
-
-                    <div className="col-6">
-                        <LoadFile name="loadFromFileBase64" onLoad={handleLoadFromFileBase64}></LoadFile>
+                    <div className="col-sm-6">
+                        <LoadFile name="loadFromFileBase64" onLoad={handleLoadFromFileBase64} />
                     </div>
                 </div>
+
+                <div className="mb-3">
+                    <label className="section-label">Input — String to {camelCase(operation)}</label>
+                    <textarea
+                        className="form-control"
+                        rows="6"
+                        placeholder={`Enter text to ${operation}...`}
+                        value={string}
+                        onChange={changeString}
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <div className="d-flex justify-content-between align-items-center mb-1">
+                        <label className="section-label mb-0">{camelCase(operation)}d Output</label>
+                        {stringProcessed && (
+                            <button className="btn btn-sm btn-outline-secondary py-0" onClick={copyToClipboard}>
+                                <i className="bi bi-clipboard me-1"></i>Copy
+                            </button>
+                        )}
+                    </div>
+                    <textarea
+                        className="form-control output-area"
+                        rows="4"
+                        readOnly
+                        value={stringProcessed}
+                        placeholder="Result will appear here..."
+                    />
+                </div>
+
+                <div className="d-flex justify-content-end">
+                    <GenerateButton title={camelCase(operation)} onClick={encodeDecode} />
+                </div>
             </div>
-            <h4>{camelCase(operation)}d String</h4>
-            <textarea name="hash" id="hash" className="form-control" rows="5" readOnly value={stringProcessed}></textarea>
-            <br />
-            <br />
-            <GenerateButton title={camelCase(operation)} onClick={encodeDecode}></GenerateButton>
-
         </div>
-
     )
 }
 

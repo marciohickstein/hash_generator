@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
-import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-
 function GenerateButton({ title, parameter, onClick }) {
     return (
-        <button className="btn btn-secondary" onClick={() => onClick(parameter)}>{title}</button>
+        <button className="btn btn-primary" onClick={() => onClick(parameter)}>
+            <i className="bi bi-play-fill me-2"></i>{title}
+        </button>
     )
 }
 
