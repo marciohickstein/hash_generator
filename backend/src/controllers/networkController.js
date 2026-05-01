@@ -1,31 +1,41 @@
-const { Socket } = require('net');
 const { connect, getLan, getExternalIp } = require('../utils/network');
 
 const networkController = {
     testConnection: async (req, res) => {
-        let hostPort = req.body.string;
-        const [host, port] = hostPort.split(':');
+        const hostPort = req.body.string;
+
+        if (typeof hostPort !== 'string' || !hostPort.includes(':')) {
+            return res.status(400).json({ error: true, message: 'Expected body: { "string": "host:port" }' });
+        }
+
+        const colonIndex = hostPort.lastIndexOf(':');
+        const host = hostPort.slice(0, colonIndex);
+        const port = hostPort.slice(colonIndex + 1);
+
+        if (!host) {
+            return res.status(400).json({ error: true, message: 'Host cannot be empty.' });
+        }
 
         try {
             const response = await connect(host, port);
-    
             return res.json(response);
         } catch (error) {
-            return res.json(error);
+            return res.status(400).json(error);
         }
     },
+
     getLan: (req, res) => {
-        const response = getLan();
-        
-        return res.json(response);
+        return res.json(getLan());
     },
 
-    getExternalIp: async (req, res) => {
-        const response = await getExternalIp();
-        
-        return res.json(response);
-    }
-    
+    getExternalIp: async (req, res, next) => {
+        try {
+            const response = await getExternalIp();
+            return res.json(response);
+        } catch (error) {
+            next(error);
+        }
+    },
 }
 
 module.exports = networkController;

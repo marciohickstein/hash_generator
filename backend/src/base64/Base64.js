@@ -14,11 +14,11 @@ class Base64 {
     }
 
     encode() {
-        return btoa(this.string);
+        return Buffer.from(this.string, 'utf8').toString('base64');
     }
 
     decode() {
-        return atob(this.string);
+        return Buffer.from(this.string, 'base64').toString('utf8');
     }
 }
 

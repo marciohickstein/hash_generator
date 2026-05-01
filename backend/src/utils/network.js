@@ -2,31 +2,50 @@ const { Socket } = require('net');
 const os = require('os');
 
 const TIMEOUT = 5000;
-const DEBUG = false;
+const EXTERNAL_IP_CACHE_TTL = 60_000;
 
-const mountReturn = (success, message) => {
-    return {
-        success,
-        message
-    };
-}
+const mountReturn = (success, message) => ({ success, message });
 
-const getLan = () => {
-    const networkInterfaces = os.networkInterfaces();
+// RFC 1918 + loopback + link-local ranges blocked to prevent internal network scanning
+const BLOCKED_HOST_PATTERN = /^(localhost|.*\.local)$|^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|0\.|169\.254\.)/;
 
-    return networkInterfaces;
-}
+const isBlockedHost = (host) => BLOCKED_HOST_PATTERN.test(host);
+
+let externalIpCache = null;
+let externalIpCachedAt = 0;
+
+const getLan = () => os.networkInterfaces();
 
 const getExternalIp = async () => {
-    const response = await fetch('http://ipinfo.io/ip');
-    const ip = await response.text();
+    const now = Date.now();
+    if (externalIpCache && now - externalIpCachedAt < EXTERNAL_IP_CACHE_TTL) {
+        return externalIpCache;
+    }
 
-    return ({
-        ip: ip
-    })
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+
+    try {
+        const response = await fetch('https://ipinfo.io/ip', { signal: controller.signal });
+        const ip = await response.text();
+        externalIpCache = { ip: ip.trim() };
+        externalIpCachedAt = now;
+        return externalIpCache;
+    } finally {
+        clearTimeout(timer);
+    }
 }
 
 const connect = (host, port) => {
+    if (isBlockedHost(host)) {
+        return Promise.reject(mountReturn(false, `Connection to host "${host}" is not allowed.`));
+    }
+
+    const portNum = Number(port);
+    if (!Number.isInteger(portNum) || portNum < 1 || portNum > 65535) {
+        return Promise.reject(mountReturn(false, `Invalid port "${port}". Must be a number between 1 and 65535.`));
+    }
+
     return new Promise((resolve, reject) => {
         let msg = '';
         const socket = new Socket();
@@ -34,45 +53,25 @@ const connect = (host, port) => {
         socket.setTimeout(TIMEOUT);
 
         socket.on('connect', () => {
-            msg = `Successfully connected on ${host}:${port}`;
+            msg = `Successfully connected on ${host}:${portNum}`;
             socket.destroy();
-            if (DEBUG) {
-                console.log(msg);
-            }
             resolve(mountReturn(true, msg));
         });
 
         socket.on('timeout', () => {
-            msg = `Expired timeout(${TIMEOUT}) on ${host}:${port}. \nTry again later.`;
-            console.error(msg);
+            msg = `Expired timeout(${TIMEOUT}ms) on ${host}:${portNum}. Try again later.`;
             socket.destroy();
-            if (DEBUG) {
-                console.log(msg);
-            }
             reject(mountReturn(false, msg));
         });
 
         socket.on('error', (error) => {
-            const msg = `Error to connect on ${host}:${port}! ${error.message ? " Message: " + error.message : ''}`;
+            msg = `Error connecting to ${host}:${portNum}. ${error.message || ''}`;
             socket.destroy();
-            if (DEBUG) {
-                console.log(msg);
-            }
             reject(mountReturn(false, msg));
         });
 
-        socket.on('close', (hadError) => {
-            if (DEBUG) {
-                if (hadError) {
-                    console.error(`Socket closed due to errors`);
-                } else {
-                    console.log(`Socket closed gracefully`);
-                }
-            }
-        });
-
-        socket.connect(port, host);
-    })
+        socket.connect(portNum, host);
+    });
 }
 
 module.exports = {
