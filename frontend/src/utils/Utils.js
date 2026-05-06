@@ -9,6 +9,8 @@ export const camelCase = (string) => {
     return arrayInCamelCase.join(' ');
 }
 
+export const BACKEND_HOST = import.meta.env.VITE_BACKEND_HOST || 'localhost';
+
 export const httpRequest = async (host, port, path, string) => {
     try {
         const responseFetch = await fetch(`http://${host}:${port}/${path}`, {

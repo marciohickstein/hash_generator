@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import GenerateButton from './GenerateButton';
-import { camelCase, httpRequest } from '../utils/Utils';
+import { camelCase, httpRequest, BACKEND_HOST } from '../utils/Utils';
 import LoadFile from './LoadFile';
 
 const OPER_ENCODE = 'encode';
@@ -22,7 +22,7 @@ function Base64Component() {
     const changeString = (event) => setString(event.target.value);
 
     const encodeDecode = async () => {
-        const response = await httpRequest(window.location.hostname, 3003, operation, string);
+        const response = await httpRequest(BACKEND_HOST, 3003, operation, string);
         if (response.error) {
             alert(response.message);
             setStringProcessed('');

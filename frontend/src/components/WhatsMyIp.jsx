@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { httpGetRequest } from '../utils/Utils';
+import { httpGetRequest, BACKEND_HOST } from '../utils/Utils';
 
 const WhatsMyIp = () => {
     const [externalIp, setExternalIp] = useState('');
@@ -7,11 +7,11 @@ const WhatsMyIp = () => {
     const [loading, setLoading] = useState(true);
 
     const getNetwork = async () => {
-        return await httpGetRequest(window.location.hostname, 3003, 'lan', '');
+        return await httpGetRequest(BACKEND_HOST, 3003, 'lan', '');
     }
 
     const getExternalIp = async () => {
-        const response = await httpGetRequest(window.location.hostname, 3003, 'externalip', '');
+        const response = await httpGetRequest(BACKEND_HOST, 3003, 'externalip', '');
         return response.ip;
     }
 
