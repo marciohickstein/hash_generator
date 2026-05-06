@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import GenerateButton from './GenerateButton';
 import LoadFile from './LoadFile';
-import { httpRequest, BACKEND_HOST } from '../utils/Utils';
+import { httpRequest } from '../utils/Utils';
 
 function HashComponent() {
     const [string, setString] = useState('');
@@ -25,7 +25,7 @@ function HashComponent() {
             setHash('');
             return;
         }
-        const response = await httpRequest(BACKEND_HOST, 3003, algo, string);
+        const response = await httpRequest(algo, string);
         if (response.error) {
             alert(response.message);
             setHash('');

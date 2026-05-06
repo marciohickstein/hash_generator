@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { httpRequest, BACKEND_HOST } from '../utils/Utils';
+import { httpRequest } from '../utils/Utils';
 
 const PortChecker = () => {
     const [statusPort, setStatusPort] = useState('');
@@ -28,7 +28,7 @@ const PortChecker = () => {
         setStatusPort('');
         setIsOpen(null);
         const hostPort = `${address}:${port}`;
-        const response = await httpRequest(BACKEND_HOST, 3003, 'connect', hostPort);
+        const response = await httpRequest('connect', hostPort);
         const open = response.success === true;
         setIsOpen(open);
         setStatusPort(open ? `Port ${port} is open` : `Port ${port} is closed`);

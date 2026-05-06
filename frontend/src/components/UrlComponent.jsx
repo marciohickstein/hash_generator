@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import GenerateButton from './GenerateButton';
-import { camelCase, httpRequest, BACKEND_HOST } from '../utils/Utils';
+import { camelCase, httpRequest } from '../utils/Utils';
 
 const OPER_ENCODE = 'encode';
 const OPER_DECODE = 'decode';
@@ -13,7 +13,7 @@ function UrlComponent() {
     const changeString = (event) => setString(event.target.value);
 
     const encodeDecode = async () => {
-        const response = await httpRequest(BACKEND_HOST, 3003, operation + '_url', string);
+        const response = await httpRequest(operation + '_url', string);
         const result = operation === OPER_ENCODE ? response.encodedUrl : response.url;
         setStringProcessed(result);
     }

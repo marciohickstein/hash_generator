@@ -9,18 +9,16 @@ export const camelCase = (string) => {
     return arrayInCamelCase.join(' ');
 }
 
-export const BACKEND_HOST = import.meta.env.VITE_BACKEND_HOST || 'localhost';
-
-export const httpRequest = async (host, port, path, string) => {
+export const httpRequest = async (path, string) => {
     try {
-        const responseFetch = await fetch(`http://${host}:${port}/${path}`, {
+        const responseFetch = await fetch(`/${path}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ string })
         });
-    
+
         const responseJson = await responseFetch.json();
         return responseJson;
 
@@ -32,9 +30,9 @@ export const httpRequest = async (host, port, path, string) => {
     }
 }
 
-export const httpGetRequest = async (host, port, path) => {
+export const httpGetRequest = async (path) => {
     try {
-        const responseFetch = await fetch(`http://${host}:${port}/${path}`);
+        const responseFetch = await fetch(`/${path}`);
         const responseJson = await responseFetch.json();
         return responseJson;
 
