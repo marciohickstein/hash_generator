@@ -6,10 +6,32 @@ const EXTERNAL_IP_CACHE_TTL = 60_000;
 
 const mountReturn = (success, message) => ({ success, message });
 
-// RFC 1918 + loopback + link-local ranges blocked to prevent internal network scanning
-const BLOCKED_HOST_PATTERN = /^(localhost|.*\.local)$|^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|0\.|169\.254\.)/;
+// RFC 1918 + loopback + link-local ranges blocked to prevent SSRF
+const IPV4_PRIVATE = /^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|127\.|0\.|169\.254\.)/;
 
-const isBlockedHost = (host) => BLOCKED_HOST_PATTERN.test(host);
+const isBlockedHost = (host) => {
+    const h = host.replace(/^\[|\]$/g, '').toLowerCase();
+
+    // Hostnames
+    if (/^(localhost|.*\.local)$/.test(h)) return true;
+
+    // IPv4 private ranges
+    if (IPV4_PRIVATE.test(h)) return true;
+
+    // IPv6 loopback and unspecified
+    if (h === '::1' || h === '::') return true;
+
+    // IPv6 link-local (fe80::/10 = fe80–febf)
+    if (/^fe[89ab][0-9a-f]:/.test(h)) return true;
+
+    // IPv6 unique local (fc00::/7 = fc** and fd**)
+    if (/^f[cd][0-9a-f]{2}:/.test(h)) return true;
+
+    // IPv4-mapped IPv6 (::ffff:<ipv4>)
+    if (h.startsWith('::ffff:') && IPV4_PRIVATE.test(h.slice(7))) return true;
+
+    return false;
+};
 
 let externalIpCache = null;
 let externalIpCachedAt = 0;
