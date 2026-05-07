@@ -17,6 +17,11 @@ export default defineConfig({
       "^/(md5|sha1|sha256|sha512|encode|decode|encode_url|decode_url|connect|lan|externalip|ping)": {
         target: "http://backend:3003",
         changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.removeHeader('origin');
+          });
+        },
       },
     },
   },
