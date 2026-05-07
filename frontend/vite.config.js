@@ -13,6 +13,7 @@ export default defineConfig({
     strictPort: true,
     host: true,
     origin: "http://0.0.0.0:8888",
+    allowedHosts: true,
     proxy: {
       "^/(md5|sha1|sha256|sha512|encode|decode|encode_url|decode_url|connect|lan|externalip|ping)": {
         target: "http://backend:3003",
