@@ -17,6 +17,8 @@ services:
       context: ./backend
     ports:
       - "3003:3003"
+    environment:
+      - ALLOWED_ORIGINS
     volumes:
       - ./backend:/app
       - /app/node_modules
