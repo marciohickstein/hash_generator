@@ -10,6 +10,7 @@ services:
       - backend
     volumes:
       - ./frontend:/app
+      - /app/node_modules
 
   backend:
     build:
@@ -18,3 +19,4 @@ services:
       - "3003:3003"
     volumes:
       - ./backend:/app
+      - /app/node_modules
