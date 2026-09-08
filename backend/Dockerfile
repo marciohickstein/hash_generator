@@ -1,13 +1,17 @@
 FROM node:alpine
 
+ENV NODE_ENV=production
+
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci
+RUN npm ci --omit=dev
 
 COPY . .
 
 EXPOSE 3003
 
-CMD ["npm", "run", "dev"]
+USER node
+
+CMD ["node", "server.js"]

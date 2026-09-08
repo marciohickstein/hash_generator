@@ -1,0 +1,25 @@
+# Desenvolvimento local, com hot reload:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# O deploy roda so o docker-compose.yml, entao nada daqui vai pro servidor.
+services:
+  frontend:
+    build:
+      context: ./frontend
+      target: build
+    # !override: sem isso o Compose concatena com o "8888:80" do arquivo base
+    # e o container tenta publicar a mesma porta duas vezes.
+    ports: !override
+      - "8888:8888"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+
+  backend:
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run dev

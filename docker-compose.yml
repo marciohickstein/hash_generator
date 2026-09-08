@@ -1,16 +1,11 @@
-version: "3.8"
-
 services:
   frontend:
     build:
       context: ./frontend
     ports:
-      - "8888:8888"
+      - "8888:80"
     depends_on:
       - backend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     restart: always
 
   backend:
@@ -20,7 +15,5 @@ services:
       - "3003:3003"
     environment:
       - ALLOWED_ORIGINS
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+      - NODE_ENV=production
     restart: always
