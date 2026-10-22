@@ -39,6 +39,8 @@ function Base64Component() {
 
     useEffect(() => {
         encodeDecode();
+        // Re-run only when a file is loaded, not on every keystroke
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [file])
 
     return (

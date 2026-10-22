@@ -61,7 +61,7 @@ const WhatsMyIp = () => {
             <div className="card tool-card">
                 <div className="card-header d-flex align-items-center gap-2">
                     <i className="bi bi-globe fs-5 text-primary"></i>
-                    <h5 className="mb-0 fw-semibold">What's My IP</h5>
+                    <h5 className="mb-0 fw-semibold">What&apos;s My IP</h5>
                 </div>
                 <div className="card-body p-4">
                     <p className="text-secondary mb-3">Your external IP address and local network interfaces.</p>

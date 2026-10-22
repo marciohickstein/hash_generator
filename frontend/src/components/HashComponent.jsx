@@ -49,6 +49,8 @@ function HashComponent() {
 
     useEffect(() => {
         generateHash();
+        // Re-run only on option/file changes, not on every keystroke
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uppercase, file, algo]);
 
     return (
