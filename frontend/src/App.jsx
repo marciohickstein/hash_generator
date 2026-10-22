@@ -6,6 +6,7 @@ import Base64Component from './components/Base64Component';
 import UrlComponent from './components/UrlComponent';
 import PortChecker from './components/PortChecker';
 import WhatsMyIp from './components/WhatsMyIp';
+import HttpStatusCodes from './components/HttpStatusCodes';
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
             </div>
             <div>
               <h1 className="mb-0 fw-bold" style={{ fontSize: '1.5rem' }}>Dev Tools</h1>
-              <p className="mb-0 opacity-75" style={{ fontSize: '0.8rem' }}>Hash · Base64 · URL · Network</p>
+              <p className="mb-0 opacity-75" style={{ fontSize: '0.8rem' }}>Hash · Base64 · URL · Network · HTTP</p>
             </div>
           </div>
         </div>
@@ -53,6 +54,11 @@ function App() {
                   <i className="bi bi-globe me-1"></i>My IP
                 </button>
               </li>
+              <li className="nav-item" role="presentation">
+                <button className="nav-link" data-bs-toggle="tab" data-bs-target="#http-status-pane" type="button" role="tab">
+                  <i className="bi bi-list-ol me-1"></i>HTTP Status
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -74,6 +80,9 @@ function App() {
           </div>
           <div className="tab-pane fade" id="whatsmyip-pane" role="tabpanel">
             <WhatsMyIp />
+          </div>
+          <div className="tab-pane fade" id="http-status-pane" role="tabpanel">
+            <HttpStatusCodes />
           </div>
         </div>
       </main>
