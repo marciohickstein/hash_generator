@@ -1,5 +1,4 @@
 const { Socket } = require('net');
-const os = require('os');
 
 const TIMEOUT = 5000;
 const EXTERNAL_IP_CACHE_TTL = 60_000;
@@ -35,8 +34,6 @@ const isBlockedHost = (host) => {
 
 let externalIpCache = null;
 let externalIpCachedAt = 0;
-
-const getLan = () => os.networkInterfaces();
 
 const getExternalIp = async () => {
     const now = Date.now();
@@ -98,7 +95,6 @@ const connect = (host, port) => {
 
 module.exports = {
     connect,
-    getLan,
     getExternalIp,
 }
 

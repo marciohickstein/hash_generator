@@ -14,7 +14,7 @@ export default defineConfig({
     host: true,
     origin: "http://0.0.0.0:8888",
     proxy: {
-      "^/(md5|sha1|sha256|sha512|encode|decode|encode_url|decode_url|connect|lan|externalip|ping)": {
+      "^/(md5|sha1|sha256|sha512|encode|decode|encode_url|decode_url|connect|externalip|ping)": {
         target: "http://backend:3003",
         changeOrigin: true,
         configure: (proxy) => {
