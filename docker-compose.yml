@@ -11,8 +11,8 @@ services:
   backend:
     build:
       context: ./backend
-    ports:
-      - "3003:3003"
+    # Sem "ports": o backend so e acessivel pela rede interna do Docker,
+    # via proxy do nginx do frontend (que aplica o rate limit).
     environment:
       - ALLOWED_ORIGINS
       - NODE_ENV=production
