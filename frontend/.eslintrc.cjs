@@ -1,6 +1,8 @@
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
+  // Injetados pelo Vite (define em vite.config.js).
+  globals: { __APP_VERSION__: 'readonly', __APP_COMMIT__: 'readonly' },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',

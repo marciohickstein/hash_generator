@@ -8,6 +8,10 @@ RUN npm ci
 
 COPY . .
 
+# Commit exibido no rodape; o deploy passa via docker-compose.yml.
+ARG GIT_COMMIT=""
+ENV GIT_COMMIT=$GIT_COMMIT
+
 RUN npm run build
 
 FROM nginx:alpine

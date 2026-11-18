@@ -67,4 +67,4 @@ jobs:
           script: |
             cd ${{ secrets.APP_PATH }}
             git pull origin master
-            docker compose up -d --build
+            GIT_COMMIT=$(git rev-parse --short HEAD) docker compose up -d --build
