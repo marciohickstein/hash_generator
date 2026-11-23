@@ -86,6 +86,11 @@ function App() {
           </div>
         </div>
       </main>
+
+      <footer className="app-footer container pb-4 text-center">
+        v{__APP_VERSION__}
+        {__APP_COMMIT__ && <span title="Commit do build"> · {__APP_COMMIT__}</span>}
+      </footer>
     </>
   )
 }

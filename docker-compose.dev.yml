@@ -17,6 +17,12 @@ services:
     command: npm run dev
 
   backend:
+    build:
+      context: ./backend
+      target: dev
+    # Exposto so no localhost, pra testar com curl (ver "curl examples.txt").
+    ports:
+      - "127.0.0.1:3003:3003"
     environment:
       - NODE_ENV=development
     volumes:

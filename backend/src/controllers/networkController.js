@@ -1,4 +1,4 @@
-const { connect, getLan, getExternalIp } = require('../utils/network');
+const { connect, getExternalIp } = require('../utils/network');
 
 const networkController = {
     testConnection: async (req, res) => {
@@ -22,10 +22,6 @@ const networkController = {
         } catch (error) {
             return res.status(400).json(error);
         }
-    },
-
-    getLan: (req, res) => {
-        return res.json(getLan());
     },
 
     getExternalIp: async (req, res, next) => {
