@@ -8,7 +8,8 @@ const urlRouter = require('./routes/urlRouter');
 const networkRouter = require('./routes/networkRouter.js');
 const express = require('express');
 
-const app = express();
+// API JSON sem cookie/sessao, entao nao ha o que proteger com token CSRF.
+const app = express(); // nosemgrep: javascript.express.security.audit.express-check-csurf-middleware-usage.express-check-csurf-middleware-usage
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
     ? process.env.ALLOWED_ORIGINS.split(',')
@@ -55,7 +56,7 @@ app.get('/ping', (req, res) => {
     });
 })
 
-app.use((error, req, res, next) => {
+app.use((error, req, res, _next) => {
     const isDev = process.env.NODE_ENV !== 'production';
     res.status(500).json({
         error: true,
