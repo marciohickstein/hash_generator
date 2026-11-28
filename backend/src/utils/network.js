@@ -2,7 +2,6 @@ const { Socket, BlockList, isIP } = require('net');
 const dns = require('dns').promises;
 
 const TIMEOUT = 5000;
-const EXTERNAL_IP_CACHE_TTL = 60_000;
 
 const mountReturn = (success, message) => ({ success, message });
 
@@ -66,29 +65,6 @@ const resolveAllowedAddress = async (host) => {
     return addresses[0].address;
 };
 
-let externalIpCache = null;
-let externalIpCachedAt = 0;
-
-const getExternalIp = async () => {
-    const now = Date.now();
-    if (externalIpCache && now - externalIpCachedAt < EXTERNAL_IP_CACHE_TTL) {
-        return externalIpCache;
-    }
-
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-
-    try {
-        const response = await fetch('https://ipinfo.io/ip', { signal: controller.signal });
-        const ip = await response.text();
-        externalIpCache = { ip: ip.trim() };
-        externalIpCachedAt = now;
-        return externalIpCache;
-    } finally {
-        clearTimeout(timer);
-    }
-}
-
 const connect = async (host, port) => {
     const portNum = Number(port);
     if (!Number.isInteger(portNum) || portNum < 1 || portNum > 65535) {
@@ -129,6 +105,5 @@ const connect = async (host, port) => {
 
 module.exports = {
     connect,
-    getExternalIp,
     isBlockedAddress,
 }

@@ -5,7 +5,6 @@ import { httpRequest } from '../utils/Utils';
 
 function HashComponent() {
     const [string, setString] = useState('');
-    const [originalString, setOriginalString] = useState('');
     const [hash, setHash] = useState('');
     const [algo, setAlgo] = useState('md5');
     const [uppercase, setUppercase] = useState(false);
@@ -25,7 +24,7 @@ function HashComponent() {
             setHash('');
             return;
         }
-        const response = await httpRequest(algo, string);
+        const response = await httpRequest(algo, uppercase ? string.toUpperCase() : string);
         if (response.error) {
             alert(response.message);
             setHash('');
@@ -34,12 +33,7 @@ function HashComponent() {
         setHash(response.hash);
     }
 
-    const changeUpperCaseString = (event) => {
-        const upperString = event.target.checked ? string.toUpperCase() : originalString;
-        setOriginalString(string);
-        setString(upperString);
-        setUppercase(event.target.checked);
-    }
+    const changeUpperCaseString = (event) => setUppercase(event.target.checked);
 
     const changeAlgorithm = (event) => setAlgo(event.target.value);
 
@@ -68,6 +62,7 @@ function HashComponent() {
                         placeholder="Enter text to hash..."
                         value={string}
                         onChange={changeString}
+                        style={uppercase ? { textTransform: 'uppercase' } : undefined}
                     />
                 </div>
 
@@ -87,13 +82,14 @@ function HashComponent() {
                                 className="form-check-input"
                                 type="checkbox"
                                 id="uppercase"
-                                onClick={changeUpperCaseString}
+                                checked={uppercase}
+                                onChange={changeUpperCaseString}
                             />
                             <label className="form-check-label" htmlFor="uppercase">Uppercase input</label>
                         </div>
                     </div>
                     <div className="col-sm-4">
-                        <LoadFile name="loadFromFileHash" uppercase={uppercase} onLoad={handleLoadFromFile} />
+                        <LoadFile name="loadFromFileHash" onLoad={handleLoadFromFile} />
                     </div>
                 </div>
 

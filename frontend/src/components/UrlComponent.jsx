@@ -14,6 +14,11 @@ function UrlComponent() {
 
     const encodeDecode = async () => {
         const response = await httpRequest(operation + '_url', string);
+        if (response.error) {
+            alert(response.message);
+            setStringProcessed('');
+            return;
+        }
         const result = operation === OPER_ENCODE ? response.encodedUrl : response.url;
         setStringProcessed(result);
     }

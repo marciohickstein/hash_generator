@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { httpRequest } from '../utils/Utils';
+import { httpGetRequest, httpRequest } from '../utils/Utils';
 
 const PortChecker = () => {
     const [statusPort, setStatusPort] = useState('');
@@ -10,13 +10,8 @@ const PortChecker = () => {
 
     useEffect(() => {
         (async () => {
-            try {
-                const response = await fetch('https://ipinfo.io/ip');
-                const ip = await response.text();
-                setAddress(ip.trim());
-            } catch {
-                setAddress('');
-            }
+            const response = await httpGetRequest('externalip');
+            setAddress(response.ip || '');
         })()
     }, []);
 
