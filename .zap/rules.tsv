@@ -1,0 +1,4 @@
+10049	IGNORE	(Storable and Cacheable Content) intencional: SPA estatica e assets com hash
+10109	IGNORE	(Modern Web Application) informativo
+2	IGNORE	(Private IP Disclosure) e o placeholder "e.g. 192.168.1.1" do PortChecker
+90004	IGNORE	(COEP) exigiria CORP no CDN do bootstrap-icons; sem uso de SharedArrayBuffer

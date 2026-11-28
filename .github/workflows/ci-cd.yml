@@ -3,6 +3,10 @@ name: Node.js CI/CD
 on:
   push:
     branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   test-backend:
@@ -12,10 +16,10 @@ jobs:
         working-directory: backend
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: 24
           cache: npm
@@ -23,6 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: SCA (npm audit)
+        run: npm audit --audit-level=high
 
       - name: Run tests
         run: npm test
@@ -34,10 +44,10 @@ jobs:
         working-directory: frontend
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: 24
           cache: npm
@@ -46,19 +56,59 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
+      - name: SCA (npm audit)
+        run: npm audit --audit-level=high
+
       - name: Build
         run: npm run build
 
-  deploy:
-    needs: [test-backend, build-frontend]
+  sast:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    container: semgrep/semgrep
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Semgrep
+        run: semgrep scan --config p/default --config p/github-actions --error --metrics=off
+
+  dast:
+    needs: [test-backend, build-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Start app
+        run: |
+          docker compose up -d --build
+          curl -fsS --retry 30 --retry-all-errors --retry-delay 2 http://localhost:8888/ping
+
+      - name: ZAP baseline
+        uses: zaproxy/action-baseline@de8ad967d3548d44ef623df22cf95c3b0baf8b25 # v0.15.0
+        with:
+          target: http://localhost:8888
+          rules_file_name: .zap/rules.tsv
+          allow_issue_writing: false
+          fail_action: true
+
+      - name: App logs
+        if: failure()
+        run: docker compose logs
+
+  deploy:
+    needs: [test-backend, build-frontend, sast, dast]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@55dabf81b49d4120609345970c91507e2d734799 # v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
