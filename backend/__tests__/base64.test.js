@@ -16,3 +16,11 @@ test(`Should decode in base 64`, () => {
 
     expect(result).toBe(string);
 })
+
+test.each(['não é base64!!', 'abc$', 'A', 'AB=C'])('Should reject invalid base 64 %s', (input) => {
+    expect(() => new Base64(input).decode()).toThrow('Invalid Base64 string.');
+})
+
+test.each([['TWE', 'Ma'], ['TWE=\n', 'Ma'], ['-_8', '\ufffd\ufffd']])('Should accept %j', (input, expected) => {
+    expect(new Base64(input).decode()).toBe(expected);
+})
