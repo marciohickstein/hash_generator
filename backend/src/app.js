@@ -15,6 +15,9 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
     ? process.env.ALLOWED_ORIGINS.split(',')
     : ['http://localhost:8888', 'http://127.0.0.1:8888'];
 
+// Um proxy na frente (nginx): req.ip passa a ser o IP real do visitante.
+app.set('trust proxy', 1);
+
 app.use(cors({
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {

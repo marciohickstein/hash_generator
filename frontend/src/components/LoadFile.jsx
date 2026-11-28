@@ -1,4 +1,4 @@
-function LoadFile({ name, onLoad, uppercase, title }) {
+function LoadFile({ name, onLoad, title }) {
 
     const onLoadFromFile = (event) => {
         let fileName = '';
@@ -14,7 +14,7 @@ function LoadFile({ name, onLoad, uppercase, title }) {
 
         fileReader.onload = (event) => {
             fileName = file.name;
-            contentOfFile = uppercase ? event.target.result.toLocaleUpperCase() : event.target.result;
+            contentOfFile = event.target.result;
             onLoad(fileName, contentOfFile);
         }
 
