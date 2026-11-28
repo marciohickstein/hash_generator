@@ -19,6 +19,10 @@ export const httpRequest = async (path, string) => {
             body: JSON.stringify({ string })
         });
 
+        if (responseFetch.status === 413) {
+            return { error: true, message: 'Input too large (max 1 MB).' };
+        }
+
         const responseJson = await responseFetch.json();
         return responseJson;
 

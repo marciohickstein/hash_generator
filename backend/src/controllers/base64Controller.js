@@ -1,4 +1,12 @@
-const Base64 = require('../base64/Base64');
+// Buffer ignora caracteres invalidos em silencio, entao valida antes.
+// Aceita base64 e base64url, com ou sem padding; tamanho % 4 == 1 nao existe.
+const decodeBase64 = (string) => {
+    const clean = string.replace(/\s/g, '');
+    if (!/^[A-Za-z0-9+/_-]*={0,2}$/.test(clean) || clean.replace(/=+$/, '').length % 4 === 1) {
+        throw new Error('Invalid Base64 string.');
+    }
+    return Buffer.from(clean, 'base64').toString('utf8');
+};
 
 const base64Controller = {
     encode: (req, res) => {
@@ -6,7 +14,7 @@ const base64Controller = {
             return res.status(400).json({ error: true, message: 'Expected body: { "string": "..." }' });
         }
         const string = req.body.string;
-        const result = new Base64(string).encode();
+        const result = Buffer.from(string, 'utf8').toString('base64');
         return res.json({ string, encode: result });
     },
 
@@ -16,7 +24,7 @@ const base64Controller = {
         }
         const string = req.body.string;
         try {
-            const result = new Base64(string).decode();
+            const result = decodeBase64(string);
             return res.json({ string, decode: result });
         } catch {
             return res.status(400).json({ error: true, message: 'Invalid Base64 string.' });

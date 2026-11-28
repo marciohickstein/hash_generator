@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import GenerateButton from './GenerateButton';
-import { camelCase, httpRequest } from '../utils/Utils';
+import { camelCase } from '../utils/Utils';
 
 const OPER_ENCODE = 'encode';
 const OPER_DECODE = 'decode';
@@ -12,15 +12,13 @@ function UrlComponent() {
 
     const changeString = (event) => setString(event.target.value);
 
-    const encodeDecode = async () => {
-        const response = await httpRequest(operation + '_url', string);
-        if (response.error) {
-            alert(response.message);
+    const encodeDecode = () => {
+        try {
+            setStringProcessed(operation === OPER_ENCODE ? encodeURIComponent(string) : decodeURIComponent(string));
+        } catch {
+            alert('Invalid URL-encoded string.');
             setStringProcessed('');
-            return;
         }
-        const result = operation === OPER_ENCODE ? response.encodedUrl : response.url;
-        setStringProcessed(result);
     }
 
     const changeOperation = (event) => setOperation(event.target.value);

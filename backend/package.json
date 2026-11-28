@@ -6,15 +6,13 @@
   "scripts": {
     "test": "npx jest --verbose",
     "lint": "eslint .",
-    "start": "node server.js",
-    "dev": "npx nodemon server.js"
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "npx nodemon --exec \"node --env-file-if-exists=.env\" server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "morgan": "^1.10.0"
   },
